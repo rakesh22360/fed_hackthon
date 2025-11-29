@@ -80,36 +80,36 @@
                 
                 <div class="role-cards" id="role-section">
                     <!-- Citizen Card (Primary) -->
-                    <div class="role-card citizen-card" onclick="navigateToRole('citizen')">
+                    <a href="login.html?role=citizen" class="role-card citizen-card">
                         <span class="role-icon">👤</span>
                         <h3>I'm a Voter</h3>
                         <p>Check your polling station, report problems, have your voice heard.</p>
-                        <button class="btn btn-primary btn-lg">Go to Voter Dashboard</button>
-                    </div>
+                        <button type="button" class="btn btn-primary btn-lg">Go to Voter Dashboard</button>
+                    </a>
 
                     <!-- Admin Card -->
-                    <div class="role-card" onclick="navigateToRole('admin')">
+                    <a href="login.html?role=admin" class="role-card">
                         <span class="role-icon">⚙️</span>
                         <h3>Administrator</h3>
                         <p>Manage election settings and monitor system operations.</p>
-                        <button class="btn btn-primary">Admin Dashboard</button>
-                    </div>
+                        <button type="button" class="btn btn-primary">Admin Dashboard</button>
+                    </a>
 
                     <!-- Observer Card -->
-                    <div class="role-card" onclick="navigateToRole('observer')">
+                    <a href="login.html?role=observer" class="role-card">
                         <span class="role-icon">👁️</span>
                         <h3>Election Observer</h3>
                         <p>Monitor stations and document what you see.</p>
-                        <button class="btn btn-primary">Observer Dashboard</button>
-                    </div>
+                        <button type="button" class="btn btn-primary">Observer Dashboard</button>
+                    </a>
 
                     <!-- Analyst Card -->
-                    <div class="role-card" onclick="navigateToRole('analyst')">
+                    <a href="login.html?role=analyst" class="role-card">
                         <span class="role-icon">📊</span>
                         <h3>Data Analyst</h3>
                         <p>Analyze trends, find patterns, write reports.</p>
-                        <button class="btn btn-primary">Analytics Dashboard</button>
-                    </div>
+                        <button type="button" class="btn btn-primary">Analytics Dashboard</button>
+                    </a>
                 </div>
             </section>
 
@@ -252,11 +252,8 @@
             document.getElementById('modalContinueBtn').addEventListener('click', continueToRole);
         });
 
-        // Override navigateToRole to show modal
-        const originalNavigateToRole = window.navigateToRole;
-        window.navigateToRole = function(role) {
-            showRoleModal(role);
-        };
+        // Note: Role navigation now uses direct links with query parameters
+        // navigateToRole() is no longer needed for role card navigation
 
         // Show welcome modal on first visit
         function initIndexPage() {

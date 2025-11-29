@@ -66,8 +66,26 @@
             transition: border-color 0.3s ease;
             font-family: inherit;
         }
+
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+            font-family: inherit;
+            background-color: white;
+            cursor: pointer;
+        }
         
         .form-group input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-group select:focus {
             outline: none;
             border-color: #2563eb;
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
@@ -173,6 +191,17 @@
 
             <form id="login-form" onsubmit="handleLogin(event)">
                 <div class="form-group">
+                    <label for="role">Select Your Role</label>
+                    <select id="role" name="role" required>
+                        <option value="">-- Choose a role --</option>
+                        <option value="citizen">👤 Voter</option>
+                        <option value="admin">⚙️ Administrator</option>
+                        <option value="observer">👁️ Election Observer</option>
+                        <option value="analyst">📊 Data Analyst</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
                     <label for="email">Email Address</label>
                     <input type="email" id="email" name="email" placeholder="Enter your email" required>
                 </div>
@@ -201,17 +230,35 @@
             window.location.href = user.role.toLowerCase() + '.html';
         }
 
+        // Pre-select role from query parameter if provided
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const roleParam = urlParams.get('role');
+            
+            if (roleParam && ['citizen', 'admin', 'observer', 'analyst'].includes(roleParam)) {
+                document.getElementById('role').value = roleParam;
+            }
+        });
+
         function handleLogin(event) {
             event.preventDefault();
 
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
+            const selectedRole = document.getElementById('role').value;
             const errorDiv = document.getElementById('error-message');
             const successDiv = document.getElementById('success-message');
 
             // Clear previous messages
             errorDiv.style.display = 'none';
             successDiv.style.display = 'none';
+
+            // Validate role selection
+            if (!selectedRole) {
+                errorDiv.textContent = '⚠️ Please select a role before logging in.';
+                errorDiv.style.display = 'block';
+                return;
+            }
 
             // Find user
             const user = findUser(email, password);
