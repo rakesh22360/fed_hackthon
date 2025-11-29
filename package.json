@@ -1,0 +1,29 @@
+{
+  "name": "election-monitoring",
+  "version": "1.0.0",
+  "description": "A responsive front-end web application for monitoring elections with role-based dashboards. Designed to inspire upcoming voters and ensure transparent elections.",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rakesh22360/fed_hackthon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rakesh22360/fed_hackthon/issues"
+  },
+  "homepage": "https://github.com/rakesh22360/fed_hackthon#readme",
+  "dependencies": {
+    "body-parser": "^2.2.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "mongoose": "^9.0.0"
+  }
+}
