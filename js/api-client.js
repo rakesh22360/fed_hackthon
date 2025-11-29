@@ -174,10 +174,20 @@ const stationAPI = {
   },
 
   /**
-   * Update crowd level at station
+   * Update crowd level at station (PATCH)
    */
   async updateCrowdLevel(id, crowdLevel) {
-    return this.update(id, { currentCrowdLevel: crowdLevel });
+    return apiClient.request(`/stations/${id}/crowd-level`, {
+      method: 'PATCH',
+      body: { currentCrowdLevel: crowdLevel },
+    });
+  },
+
+  /**
+   * Get stations by crowd level
+   */
+  async getByCrewdLevel(level) {
+    return apiClient.request(`/stations/filter/crowd-level/${level}`);
   },
 };
 

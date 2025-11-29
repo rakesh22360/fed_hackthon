@@ -13,6 +13,7 @@ function initializeCitizenDashboard() {
             setupIssueReportForm();
             displayCitizenReports();
             displayElectionInfo(data);
+            setupStationsList(data);
         });
     } catch (error) {
         console.error('Error initializing citizen dashboard:', error);
@@ -158,6 +159,115 @@ function deleteReport(reportId) {
         console.error('Error deleting report:', error);
         showNotification('Error deleting report', 'danger');
     }
+}
+
+/**
+ * Setup stations list in modal
+ * @param {Object} data - Mock election data
+ */
+function setupStationsList(data) {
+    try {
+        const stationsList = document.getElementById('stations-list');
+        if (!stationsList) return;
+
+        // Load from API first, fallback to mock data
+        stationAPI.getAll().then(response => {
+            let stations = [];
+            if (response.success && response.data) {
+                stations = Array.isArray(response.data) ? response.data : 
+                          response.data.stations || [];
+            }
+            
+            // Fallback to mock if API doesn't return data
+            if (stations.length === 0) {
+                stations = data.pollingStations || [];
+            }
+
+            displayStationsInModal(stations, stationsList);
+        }).catch(error => {
+            // On error, use mock data
+            const stations = data.pollingStations || [];
+            displayStationsInModal(stations, stationsList);
+        });
+    } catch (error) {
+        console.error('Error setting up stations list:', error);
+    }
+}
+
+/**
+ * Display stations in the modal
+ * @param {Array} stations - Array of stations
+ * @param {Element} container - Container element
+ */
+function displayStationsInModal(stations, container) {
+    if (stations.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: #64748b;">No polling stations available</p>';
+        return;
+    }
+
+    container.innerHTML = stations.map((station, index) => {
+        const crowdLevel = station.currentCrowdLevel || 'low';
+        const crowdEmojis = {
+            'low': '😊',
+            'medium': '😐',
+            'high': '😟'
+        };
+        const crowdColors = {
+            'low': '#10b981',
+            'medium': '#f59e0b',
+            'high': '#ef4444'
+        };
+
+        return `
+            <div class="card" style="cursor: pointer; border-left: 4px solid ${crowdColors[crowdLevel]};" onclick="openStationMapDetails('${station._id || station.id || index}')">
+                <div style="display: flex; justify-content: space-between; align-items: start;">
+                    <div style="flex: 1;">
+                        <h3 style="margin: 0 0 8px 0; font-size: 16px;">${escapeHtml(station.name)}</h3>
+                        <p style="margin: 0 0 8px 0; color: var(--dark-gray); font-size: 13px;">
+                            📍 ${escapeHtml(station.location?.address || station.address || station.location || 'N/A')}
+                        </p>
+                        <p style="margin: 0 0 8px 0; color: var(--dark-gray); font-size: 13px;">
+                            🕐 ${station.votingHours?.startTime || 'N/A'} - ${station.votingHours?.endTime || 'N/A'}
+                        </p>
+                        <p style="margin: 0; color: ${crowdColors[crowdLevel]}; font-weight: 600;">
+                            ${crowdEmojis[crowdLevel]} Crowd Level: ${crowdLevel.toUpperCase()}
+                        </p>
+                    </div>
+                    <button class="btn btn-sm btn-primary" onclick="event.stopPropagation(); openStationMapDetails('${station._id || station.id || index}')">
+                        View Details →
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+/**
+ * Open station details from map
+ * @param {string} stationId - Station ID
+ */
+function openStationMapDetails(stationId) {
+    // Close the stations list modal
+    document.getElementById('checkStationModal').classList.remove('active');
+    
+    // Open the map modal
+    document.getElementById('mapModal').classList.add('active');
+    
+    // Trigger map initialization if needed
+    setTimeout(() => {
+        if (typeof initializePollingMap === 'function' && window.currentMapInstance === null) {
+            initializePollingMap({
+                containerId: 'map-container',
+                zoom: 14,
+                center: { lat: 28.6139, lng: 77.2090 }
+            });
+        }
+        
+        // If map is already initialized, show station details
+        if (window.currentMapInstance) {
+            window.currentMapInstance.showStationDetails(stationId);
+        }
+    }, 300);
 }
 
 /**

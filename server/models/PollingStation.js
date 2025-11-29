@@ -12,12 +12,23 @@ const PollingStationSchema = new mongoose.Schema(
         type: String,
         required: true,
       },
-      latitude: Number,
-      longitude: Number,
+      latitude: {
+        type: Number,
+        required: true,
+        min: -90,
+        max: 90,
+      },
+      longitude: {
+        type: Number,
+        required: true,
+        min: -180,
+        max: 180,
+      },
     },
     capacity: {
       type: Number,
       required: [true, 'Please provide station capacity'],
+      min: 1,
     },
     currentCrowdLevel: {
       type: String,
@@ -25,8 +36,16 @@ const PollingStationSchema = new mongoose.Schema(
       default: 'low',
     },
     votingHours: {
-      startTime: String,
-      endTime: String,
+      startTime: {
+        type: String,
+        required: true,
+        default: '7:00 AM',
+      },
+      endTime: {
+        type: String,
+        required: true,
+        default: '6:00 PM',
+      },
     },
     officialInCharge: {
       type: mongoose.Schema.Types.ObjectId,
@@ -35,14 +54,24 @@ const PollingStationSchema = new mongoose.Schema(
     totalVoters: {
       type: Number,
       default: 0,
+      min: 0,
     },
     votersTurnout: {
       type: Number,
       default: 0,
+      min: 0,
+    },
+    contactNumber: {
+      type: String,
+      default: 'N/A',
     },
     isOpen: {
       type: Boolean,
       default: true,
+    },
+    lastCrowdLevelUpdate: {
+      type: Date,
+      default: Date.now,
     },
     createdAt: {
       type: Date,
