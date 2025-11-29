@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Election Monitoring System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <a href="index.html" class="nav-logo">🗳️</a>
+                <span>EMS - Admin</span>
+            </div>
+            <div class="nav-menu">
+                <a href="admin.html" class="nav-link active">Dashboard</a>
+                <a href="index.html" class="nav-link">Home</a>
+                <span id="user-info" style="color: var(--dark-gray); margin-left: auto; margin-right: 20px; font-weight: 600;"></span>
+                <button class="btn btn-secondary btn-sm" onclick="handleLogout()">Logout</button>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <header class="page-header">
+                <h1>Administrator Dashboard</h1>
+                <p>Manage election configuration, monitor system health, and oversee all operations</p>
+            </header>
+
+            <section class="stats-section">
+                <div class="stat-card">
+                    <div class="stat-icon">📍</div>
+                    <div class="stat-content">
+                        <h3>Total Polling Stations</h3>
+                        <p id="total-stations" class="stat-value">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-content">
+                        <h3>Registered Voters</h3>
+                        <p id="total-voters" class="stat-value">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⚠️</div>
+                    <div class="stat-content">
+                        <h3>Active Issues</h3>
+                        <p id="active-issues" class="stat-value">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-content">
+                        <h3>System Status</h3>
+                        <p id="system-status" class="stat-value">Operational</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="dashboard-section">
+                <div class="section-header">
+                    <h2>Polling Stations Overview</h2>
+                    <button class="btn btn-secondary" onclick="adminRefreshData()">Refresh Data</button>
+                </div>
+                <div class="card">
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Station ID</th>
+                                <th>Location</th>
+                                <th>Capacity</th>
+                                <th>Current Voters</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stations-table-body">
+                            <!-- Dynamically populated by admin.js -->
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </section>
+
+            <section class="dashboard-section">
+                <div class="section-header">
+                    <h2>System Configuration</h2>
+                </div>
+                <div class="card">
+                <div class="config-grid">
+                    <div class="config-item">
+                        <label>Election Name</label>
+                        <input type="text" id="election-name" placeholder="Enter election name" class="input-field">
+                    </div>
+                    <div class="config-item">
+                        <label>Election Date</label>
+                        <input type="date" id="election-date" class="input-field">
+                    </div>
+                    <div class="config-item">
+                        <label>Election Status</label>
+                        <select id="election-status" class="input-field">
+                            <option>Planning</option>
+                            <option>Active</option>
+                            <option>Completed</option>
+                        </select>
+                    </div>
+                    <div class="config-item">
+                        <label>Time Limit (hours)</label>
+                        <input type="number" id="time-limit" placeholder="Enter hours" class="input-field">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="adminSaveConfiguration()">Save Configuration</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/admin.js"></script>
+    <script>
+        // Auth guard
+        if (!authGuard()) {
+            window.location.href = 'login.html';
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = getCurrentUser();
+            document.getElementById('user-info').textContent = `${user.name} (${user.role})`;
+            adminRefreshData();
+        });
+    </script>
+</body>
+</html>

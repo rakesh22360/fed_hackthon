@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Observer Dashboard - Election Monitoring System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <a href="index.html" class="nav-logo">🗳️</a>
+                <span>EMS - Observer</span>
+            </div>
+            <div class="nav-menu">
+                <a href="observer.html" class="nav-link active">Dashboard</a>
+                <a href="index.html" class="nav-link">Home</a>
+                <span id="user-info" style="color: var(--dark-gray); margin-left: auto; margin-right: 20px; font-weight: 600;"></span>
+                <button class="btn btn-secondary btn-sm" onclick="handleLogout()">Logout</button>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <header class="page-header">
+                <h1>Election Observer Dashboard</h1>
+                <p>Monitor election activities and compile comprehensive observation reports</p>
+            </header>
+
+            <section class="stats-section">
+                <div class="stat-card">
+                    <div class="stat-icon">👁️</div>
+                    <div class="stat-content">
+                        <h3>Observations</h3>
+                        <p id="observation-count" class="stat-value">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📍</div>
+                    <div class="stat-content">
+                        <h3>Stations Monitored</h3>
+                        <p id="monitored-stations" class="stat-value">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⚠️</div>
+                    <div class="stat-content">
+                        <h3>Incidents Reported</h3>
+                        <p id="incidents-count" class="stat-value">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-content">
+                        <h3>Compliance Rate</h3>
+                        <p id="compliance-rate" class="stat-value">0%</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="dashboard-section">
+                <div class="section-header">
+                    <h2>Log New Observation</h2>
+                </div>
+                <div class="card">
+                <form id="observation-form" class="form-grid">
+                    <div class="form-group full-width">
+                        <label for="obs-title">Observation Title *</label>
+                        <input type="text" id="obs-title" placeholder="Brief title of your observation" class="input-field" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="obs-station">Polling Station *</label>
+                        <input type="text" id="obs-station" placeholder="Station name/ID" class="input-field" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="obs-time">Time of Observation *</label>
+                        <input type="time" id="obs-time" class="input-field" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="obs-type">Observation Type *</label>
+                        <select id="obs-type" class="input-field" required>
+                            <option value="">Select Type</option>
+                            <option value="queue">Queue Management</option>
+                            <option value="procedure">Procedure Compliance</option>
+                            <option value="equipment">Equipment Status</option>
+                            <option value="staff">Staff Conduct</option>
+                            <option value="security">Security Protocol</option>
+                            <option value="incident">Incident</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="obs-details">Detailed Observation *</label>
+                        <textarea id="obs-details" placeholder="Document your detailed observations..." class="input-field textarea" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="obs-severity">Issue Severity</label>
+                        <select id="obs-severity" class="input-field">
+                            <option value="none">No Issue</option>
+                            <option value="low">Minor Issue</option>
+                            <option value="medium">Moderate Issue</option>
+                            <option value="high">Serious Issue</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary full-width">Log Observation</button>
+                </form>
+                </div>
+
+                <div id="obs-success-message" class="alert alert-success" style="display: none; margin-top: 20px;">
+                    ✓ Observation logged successfully!
+                </div>
+            </section>
+
+            <section class="dashboard-section">
+                <div class="section-header">
+                    <h2>Monitoring Activities</h2>
+                    <button class="btn btn-secondary" onclick="observerRefreshData()">Refresh</button>
+                </div>
+                <div class="card">
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date/Time</th>
+                                <th>Station</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Severity</th>
+                            </tr>
+                        </thead>
+                        <tbody id="observations-table-body">
+                            <!-- Dynamically populated by observer.js -->
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </section>
+
+            <section class="dashboard-section">
+                <div class="section-header">
+                    <h2>Station Compliance Summary</h2>
+                </div>
+                <div class="card">
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Station</th>
+                                <th>Compliance Status</th>
+                                <th>Last Checked</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="compliance-table-body">
+                            <!-- Dynamically populated by observer.js -->
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/observer.js"></script>
+    <script>
+        // Auth guard
+        if (!authGuard()) {
+            window.location.href = 'login.html';
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = getCurrentUser();
+            document.getElementById('user-info').textContent = `${user.name} (${user.role})`;
+            initializeObserverDashboard();
+        });
+    </script>
+</body>
+</html>

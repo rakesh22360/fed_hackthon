@@ -1,0 +1,108 @@
+{
+  "election": {
+    "name": "General Election 2025",
+    "date": "2025-12-15",
+    "status": "Planning",
+    "pollingHours": "7:00 AM - 6:00 PM",
+    "requiredDocuments": "Valid National ID, Voter Registration Card",
+    "totalVoters": 50000,
+    "description": "Democratic election for legislative representatives",
+    "supportHotline": "1-800-VOTE"
+  },
+  "pollingStations": [
+    {
+      "id": "PS001",
+      "name": "Central High School",
+      "location": "Downtown District",
+      "address": "123 Main Street, Central City",
+      "capacity": 500,
+      "currentVoters": 0,
+      "status": "Ready",
+      "managerId": "admin_001",
+      "contactNumber": "+1-555-0101"
+    },
+    {
+      "id": "PS002",
+      "name": "Community Center A",
+      "location": "North District",
+      "address": "456 North Avenue, North City",
+      "capacity": 400,
+      "currentVoters": 0,
+      "status": "Ready",
+      "managerId": "admin_002",
+      "contactNumber": "+1-555-0102"
+    },
+    {
+      "id": "PS003",
+      "name": "Central Library Branch",
+      "location": "East Side",
+      "address": "789 East Road, East Town",
+      "capacity": 350,
+      "currentVoters": 0,
+      "status": "Ready",
+      "managerId": "admin_003",
+      "contactNumber": "+1-555-0103"
+    },
+    {
+      "id": "PS004",
+      "name": "Sports Complex",
+      "location": "West Area",
+      "address": "321 West Drive, West Valley",
+      "capacity": 600,
+      "currentVoters": 0,
+      "status": "Ready",
+      "managerId": "admin_004",
+      "contactNumber": "+1-555-0104"
+    },
+    {
+      "id": "PS005",
+      "name": "Town Hall",
+      "location": "Central",
+      "address": "654 Center Plaza, Central Square",
+      "capacity": 450,
+      "currentVoters": 0,
+      "status": "Ready",
+      "managerId": "admin_005",
+      "contactNumber": "+1-555-0105"
+    }
+  ],
+  "candidates": [
+    {
+      "id": "cand_001",
+      "name": "John Smith",
+      "party": "Democratic Party",
+      "symbol": "🌊",
+      "description": "Healthcare and Education Reform"
+    },
+    {
+      "id": "cand_002",
+      "name": "Jane Doe",
+      "party": "Republican Party",
+      "symbol": "🐘",
+      "description": "Economic Growth and Job Creation"
+    },
+    {
+      "id": "cand_003",
+      "name": "Michael Johnson",
+      "party": "Independent",
+      "symbol": "⭐",
+      "description": "Community-Focused Development"
+    }
+  ],
+  "issues": [],
+  "observations": [],
+  "reports": [],
+  "analytics": {
+    "totalVotes": 0,
+    "avgVotingTime": 0,
+    "turnoutRate": 0,
+    "anomalies": 0,
+    "stationStatus": "all_operational"
+  },
+  "metadata": {
+    "version": "1.0",
+    "lastUpdated": "2025-11-29T00:00:00Z",
+    "dataSource": "Election Commission",
+    "confidential": false
+  }
+}

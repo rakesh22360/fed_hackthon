@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Election Monitoring System - Made for Voters</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Welcome Modal -->
+    <div id="welcomeModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-icon">🗳️</span>
+            <h2 class="modal-title">Welcome!</h2>
+            <p class="modal-text">
+                This is a safe, simple place for voters to check on their polling station and report any issues.
+                <strong>Elections should be fair for everyone.</strong>
+            </p>
+            <div class="modal-buttons">
+                <button class="btn btn-primary modal-btn" onclick="goToCitizen()">I am a Voter</button>
+                <button class="btn btn-secondary modal-btn" onclick="closeWelcomeModal()">Other Roles</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Role Info Modal -->
+    <div id="roleInfoModal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeRoleModal()">&times;</button>
+            <h3 id="modalRoleTitle"></h3>
+            <p id="modalRoleDescription"></p>
+            <button id="modalContinueBtn" class="btn btn-primary" style="margin-top: var(--spacing-lg); width: 100%;">Continue to Dashboard</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <span class="nav-logo">🗳️</span>
+                <span>Election Monitoring</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="login.html" class="btn btn-sm btn-primary" id="login-btn">Login</a>
+            </div>
+            <div id="user-nav" style="display: none; margin-left: auto;">
+                <span style="color: var(--dark-gray); margin-right: 15px;">👤 <span id="user-display"></span></span>
+                <button class="btn btn-sm btn-secondary" onclick="handleLogout()">Logout</button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="hero-content">
+                    <span class="hero-icon">🗳️</span>
+                    <h1>Elections You Can Trust</h1>
+                    <p class="hero-tagline">Made for Voters – Simple, Safe & Transparent Elections</p>
+                    <p style="color: rgba(255, 255, 255, 0.9); font-size: 16px;">Know what's happening at your polling station. Report problems. Make elections fair.</p>
+                </div>
+                <img src="../one.jpeg" alt="People voting in democratic election" class="hero-illustration">
+            </section>
+
+            <!-- Login / Sign Up CTA -->
+            <section class="login-cta-section">
+                <div class="login-cta-card">
+                    <p class="login-cta-text">Already have an account?</p>
+                    <div class="cta-buttons">
+                        <a href="login.html" class="btn btn-primary">Login</a>
+                        <a href="signup.html" class="btn btn-secondary">Sign Up</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Role Selection - Citizen First -->
+            <section class="role-cards-container">
+                <h2 style="text-align: center; margin-bottom: 30px;">Choose Your Role</h2>
+                
+                <div class="role-cards" id="role-section">
+                    <!-- Citizen Card (Primary) -->
+                    <div class="role-card citizen-card" onclick="navigateToRole('citizen')">
+                        <span class="role-icon">👤</span>
+                        <h3>I'm a Voter</h3>
+                        <p>Check your polling station, report problems, have your voice heard.</p>
+                        <button class="btn btn-primary btn-lg">Go to Voter Dashboard</button>
+                    </div>
+
+                    <!-- Admin Card -->
+                    <div class="role-card" onclick="navigateToRole('admin')">
+                        <span class="role-icon">⚙️</span>
+                        <h3>Administrator</h3>
+                        <p>Manage election settings and monitor system operations.</p>
+                        <button class="btn btn-primary">Admin Dashboard</button>
+                    </div>
+
+                    <!-- Observer Card -->
+                    <div class="role-card" onclick="navigateToRole('observer')">
+                        <span class="role-icon">👁️</span>
+                        <h3>Election Observer</h3>
+                        <p>Monitor stations and document what you see.</p>
+                        <button class="btn btn-primary">Observer Dashboard</button>
+                    </div>
+
+                    <!-- Analyst Card -->
+                    <div class="role-card" onclick="navigateToRole('analyst')">
+                        <span class="role-icon">📊</span>
+                        <h3>Data Analyst</h3>
+                        <p>Analyze trends, find patterns, write reports.</p>
+                        <button class="btn btn-primary">Analytics Dashboard</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3 Simple Steps -->
+            <section class="mb-40">
+                <h2 style="text-align: center; margin-bottom: 30px;">3 Simple Steps for Voters</h2>
+                <div class="steps-container">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h3>Choose Your Role</h3>
+                        <p>Select "Voter" or log in if you already have an account.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h3>Find Your Station</h3>
+                        <p>Check location, hours, and current crowd level.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h3>Report & Speak Up</h3>
+                        <p>See an issue? Report it. Your feedback makes elections better.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Elections in Action Gallery -->
+            <section class="gallery-section">
+                <h2>Elections in Action</h2>
+                <p>See how citizens across the nation participate in fair, transparent elections</p>
+                <div class="gallery-grid">
+                    <!-- Card 1: Voters waiting in line -->
+                    <div class="gallery-item" data-gallery="waiting">
+                        <img src="../one.jpeg" alt="Voters waiting in line at polling station" class="gallery-primary-img">
+                        <img src="../tw0.jpeg" alt="Voters waiting in line at polling station" class="hidden-thumb">
+                    </div>
+                    
+                    <!-- Card 2: Citizen voting -->
+                    <div class="gallery-item" data-gallery="citizen">
+                        <img src="../three.jpeg" alt="Citizen voting at polling station" class="gallery-primary-img">
+                        <img src="../one.jpeg" alt="Citizen voting at polling station" class="hidden-thumb">
+                        <img src="../tw0.jpeg" alt="Citizen voting at polling station" class="hidden-thumb">
+                    </div>
+                    
+                    <!-- Card 3: Election officials -->
+                    <div class="gallery-item" data-gallery="officials">
+                        <img src="../four.png" alt="Election officials monitoring polling station" class="gallery-primary-img">
+                        <img src="../one.jpeg" alt="Election officials monitoring polling station" class="hidden-thumb">
+                        <img src="../three.jpeg" alt="Election officials monitoring polling station" class="hidden-thumb">
+                        <img src="../tw0.jpeg" alt="Election officials monitoring polling station" class="hidden-thumb">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer style="text-align: center; padding: 40px 20px; color: var(--dark-gray); border-top: 1px solid var(--light-gray);">
+                <p><strong>Election Monitoring System</strong></p>
+                <p style="font-size: 13px; margin-top: 10px;">Promoting transparent, fair, and secure elections for all voters.</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Global Lightbox for Image Preview -->
+    <div id="imageLightbox" class="modal-overlay hidden">
+        <div class="modal-card image-modal">
+            <button class="modal-close" aria-label="Close image preview">&times;</button>
+            <img id="lightboxMainImage" src="" alt="Preview" />
+            <div id="lightboxThumbnails" class="lightbox-thumbs"></div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/storage.js"></script>
+    <script>
+        // Role descriptions for modal
+        const roleDescriptions = {
+            citizen: {
+                title: '👤 Voter Dashboard',
+                description: 'Check your polling station status, see real-time crowd levels, report any issues you observe, and stay informed about the voting process in your area.'
+            },
+            admin: {
+                title: '⚙️ Administrator Panel',
+                description: 'Manage election settings, monitor system operations, review reported issues, and oversee the entire election monitoring system.'
+            },
+            observer: {
+                title: '👁️ Observer Portal',
+                description: 'Monitor polling stations, document observations, verify voting procedures, and contribute to election transparency and integrity.'
+            },
+            analyst: {
+                title: '📊 Analytics Dashboard',
+                description: 'Analyze election trends, identify patterns in voting data, generate comprehensive reports, and provide data-driven insights.'
+            }
+        };
+
+        let pendingNavigation = null;
+
+        function showRoleModal(role) {
+            const modal = document.getElementById('roleInfoModal');
+            const roleInfo = roleDescriptions[role];
+            
+            document.getElementById('modalRoleTitle').textContent = roleInfo.title;
+            document.getElementById('modalRoleDescription').textContent = roleInfo.description;
+            
+            pendingNavigation = role;
+            modal.classList.remove('hidden');
+        }
+
+        function closeRoleModal() {
+            const modal = document.getElementById('roleInfoModal');
+            modal.classList.add('hidden');
+            pendingNavigation = null;
+        }
+
+        function continueToRole() {
+            if (pendingNavigation) {
+                const roles = {
+                    'admin': 'admin.html',
+                    'citizen': 'citizen.html',
+                    'observer': 'observer.html',
+                    'analyst': 'analyst.html'
+                };
+                
+                if (roles[pendingNavigation]) {
+                    window.location.href = roles[pendingNavigation];
+                }
+            }
+        }
+
+        // Close modal when clicking outside of it
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('roleInfoModal');
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeRoleModal();
+                }
+            });
+
+            // Set up continue button to actually navigate
+            document.getElementById('modalContinueBtn').addEventListener('click', continueToRole);
+        });
+
+        // Override navigateToRole to show modal
+        const originalNavigateToRole = window.navigateToRole;
+        window.navigateToRole = function(role) {
+            showRoleModal(role);
+        };
+
+        // Show welcome modal on first visit
+        function initIndexPage() {
+            // Check if user is logged in
+            if (isLoggedIn()) {
+                const user = getCurrentUser();
+                document.getElementById('login-btn').parentElement.style.display = 'none';
+                document.getElementById('user-nav').style.display = 'flex';
+                document.getElementById('user-display').textContent = user.name;
+                document.getElementById('welcomeModal').classList.remove('active');
+            } else {
+                // Show welcome modal if not seen before
+                if (!localStorage.getItem('ems_seen_welcome')) {
+                    document.getElementById('welcomeModal').classList.add('active');
+                    localStorage.setItem('ems_seen_welcome', 'true');
+                }
+            }
+        }
+
+        function closeWelcomeModal() {
+            document.getElementById('welcomeModal').classList.remove('active');
+        }
+
+        function goToCitizen() {
+            const user = getCurrentUser();
+            if (user) {
+                window.location.href = 'citizen.html';
+            } else {
+                window.location.href = 'signup.html';
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', initIndexPage);
+
+        // ============================================
+        // LIGHTBOX FUNCTIONALITY
+        // ============================================
+        
+        const lightbox = document.getElementById('imageLightbox');
+        const lightboxMain = document.getElementById('lightboxMainImage');
+        const lightboxThumbs = document.getElementById('lightboxThumbnails');
+        let currentGalleryImages = [];
+        let currentImageIndex = 0;
+
+        // Set up gallery item click handlers
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('click', openLightbox);
+        });
+
+        // Close lightbox when clicking the X button
+        document.querySelector('#imageLightbox .modal-close').addEventListener('click', closeLightbox);
+
+        // Close lightbox when clicking outside the modal card
+        lightbox.addEventListener('click', function(e) {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        function openLightbox(event) {
+            const galleryItem = event.currentTarget;
+            const images = Array.from(galleryItem.querySelectorAll('img'));
+            
+            if (images.length === 0) return;
+            
+            currentGalleryImages = images.map(img => ({
+                src: img.src,
+                alt: img.alt
+            }));
+            
+            currentImageIndex = 0;
+            displayLightboxImage();
+            lightbox.classList.remove('hidden');
+        }
+
+        function closeLightbox() {
+            lightbox.classList.add('hidden');
+            currentGalleryImages = [];
+        }
+
+        function displayLightboxImage() {
+            if (currentGalleryImages.length === 0) return;
+            
+            const image = currentGalleryImages[currentImageIndex];
+            lightboxMain.src = image.src;
+            lightboxMain.alt = image.alt;
+            
+            // Build thumbnails
+            lightboxThumbs.innerHTML = '';
+            currentGalleryImages.forEach((img, index) => {
+                const thumb = document.createElement('div');
+                thumb.className = 'lightbox-thumb' + (index === currentImageIndex ? ' active' : '');
+                thumb.innerHTML = `<img src="${img.src}" alt="${img.alt}" />`;
+                thumb.addEventListener('click', () => {
+                    currentImageIndex = index;
+                    displayLightboxImage();
+                });
+                lightboxThumbs.appendChild(thumb);
+            });
+        }
+
+        // Keyboard navigation for lightbox
+        document.addEventListener('keydown', function(e) {
+            if (lightbox.classList.contains('hidden')) return;
+            
+            if (e.key === 'Escape') {
+                closeLightbox();
+            } else if (e.key === 'ArrowLeft' && currentImageIndex > 0) {
+                currentImageIndex--;
+                displayLightboxImage();
+            } else if (e.key === 'ArrowRight' && currentImageIndex < currentGalleryImages.length - 1) {
+                currentImageIndex++;
+                displayLightboxImage();
+            }
+        });
+    </script>
+</body>
+</html>
